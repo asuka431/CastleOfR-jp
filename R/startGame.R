@@ -33,12 +33,12 @@ startGame <- function(...){
     game <- if (continue) {
       readRDS(file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))
     } else {
-      message("You have been cordially invited to have tea with Lady R, at the Castle of R.")
-      message("How would you describe your level of proficiency in R?")
-      playerLevel <- menu(c("My dear, I'm the Master.",
-                            "I'm pretty good actually.",
-                            "I get by.",
-                            "What is R?"))
+      message("あなたはRの城に居るRﾁｬﾝに、お茶会へ来ませんか、と招待を受け取った。")
+      message("貴方のR言語に対する習熟度は?")
+      playerLevel <- menu(c("あぁ、なんでもできる程度です",
+                            "かなり使いこなせます",
+                            "ちょっと慣れてきた",
+                            "Rって何ですか"))
       initializeGame(ifelse(playerLevel == 0, 4, playerLevel))
     }
     cb <- function(expr, val, ok, vis, data = game){
