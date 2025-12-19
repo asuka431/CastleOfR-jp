@@ -1,15 +1,15 @@
 name	title	floor	comment
-intro	The Intro Room	1	"If you want to take an object and put it in your satchel, try ?takeObject."
-simple	The Simple Manipulations Room	1	"If you don't know the answer to a question, try ?hint and ?solution."
-objectsRoom	The Objects Room	1	NA
-factors	The Factors Room	1	NA
-arrays	The Arrays Room	2	NA
-lists	The Lists Room	2	NA
-reading	The Reading Room	2	NA
-probability	The Probability Room	2	NA
-grouping	The Grouping Room	3	"BTW, if you want to know everything that's going on, try ?wtf."
-functions	The Functions Room	3	NA
-models	The Models Room	3	NA
-plots	The Plots Room	3	NA
-packagesTower	The Packages Tower	4	NA
-osTower	The OS Tower	4	NA
+intro	最初の部屋	1	拾えるうちに拾っておかないと、詰むかもしれない。?takeObjectで使い方を調べよう。
+simple	単純操作の部屋	1	問題がわからないなら ?hint と ?solutionを活用しよう。
+objectsRoom	変数の部屋	1	NA
+factors	因子の部屋	1	NA
+arrays	多次元の部屋	2	NA
+lists	リストの部屋	2	NA
+reading	読む部屋	2	NA
+probability	可能性の部屋	2	NA
+grouping	振り分けの部屋	3	ちなみに、右も左もわからなくなったら ?wtf が良いかもしれない。
+functions	機械仕掛けの部屋	3	NA
+models	モデルの部屋	3	NA
+plots	プロットの部屋	3	NA
+packagesTower	パッケージの塔	4	NA
+osTower	OSの塔	4	NA
