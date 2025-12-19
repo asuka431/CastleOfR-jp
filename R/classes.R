@@ -282,30 +282,30 @@ DarkRoom <- R6::R6Class("DarkRoom",
 )
 
 gameStartScenario <- function() {
-  message("Welcome to the Castle of R!")
-  message("\nCastle of R is a text-based adventure, based on the canonical 'An Introduction to R' book, by Venables, Smith and the R Core Team. The purpose of this game is to test your skills in base R.")
-  message("\nIf at (almost) any stage you'd like to quit the game and possibly return back later, enter endGame(). Let's begin.")
-  message("\nYou're in the Castle lounge, 1st floor.\nYou're sitting in front of Lady R, an elderly and pleasant woman, who is the owner of the Castle of R.\nBehind you there's a window with a lovely view to the gardens of the Castle of R.\nIn front of you, over Lady R's shoulder, you can see a door, towards the north.")
-  message("Lady R is asking for your name.")
+  message("Castle of R! へ ようこそ！")
+  message("\nCastle of Rは 'An Introduction to R' 著者の Venables, Smith と R Core Team によるテキストベース な アドベンチャーです。 このゲームはRの基本能力を確認するためのものです。")
+  message("\nゲーム中にendGame()と入力すれば(基本的に)いつでも中断して退出が可能です。それでは始まりです。")
+  message("\nあなたは城の1階、ロビーにいます。\nあなたの正面には、アール城の持ち主である アール婦人 というやさしそうな老婦人が座っています。\nあなたの後ろの窓からはアール城の美しい庭園が見えることでしょう。\n正面のアール婦人の肩越しに、北側に続くドアが見えます。")
+  message("アール婦人は貴方に名前を訪ねます。")
   playerName <- readline()
-  message(paste0("\"Pleased to meet you ", playerName, ". Would like some tea?\""))
+  message(paste0("\"お会いできてとっても嬉しいわ ", playerName, ". お茶はいかがかしら?\""))
   tea <- menu(c("yes", "no")) == 1
   if (tea) {
-    message("Lady R pours you a cup of tea. You drink the tea and at the bottom of the cup you see a strange message:\n      \"Read.\"\n")
+    message("アール婦人はカップにお茶を注ぐ。お茶を飲むと、カップの底に奇妙なメッセージが見えた。...\n      \"ヨメ\"\n")
   }
-  message("Lady R says:\"Biscuits?\"")
+  message("Lady R says:\"ビスケットもどうぞ?\"")
   biscuits <- menu(c("yes", "no")) == 1
   if (biscuits) {
-    message("Lady R serves you a small plate with biscuits. You eat the biscuits and at the bottom of the plate it says:\n      \"Run.\"")
+    message("アール婦人は貴方にビスケットの小皿を勧める。 貴方はビスケットを食べ進めると、皿の真ん中に有るメッセージが見えた。...\n      \"ハシレ\"")
   } else {
-    message("\"Quite the ascetic, aren't we? Very well then.\"")
+    message("\"とってもお行儀がよろしいですね?まったく...\"")
   }
-  message("\nSuddenly Lady R gets off her chair.\nShe no longer looks pleasant. In fact she's holding a knife and saying:\n\"I'm so glad you could join me at this beautiful day. I need me a fresh R gimp!\"\nYou realize you need to run. But where?")
-  message("\nYou move towards the northern door with your satchel, quick! Write \"openDoor(1)\"! Hurry!")
+  message("\n突然、アール婦人が椅子から立ち上がった。\n先程の優しさはどこへやら。彼女は包丁を手に取り、言い放った。\n\"今日はとってもいい日よね。新鮮なRユーザーがのこのこと迷い込んできた!\"\n貴方は状況を察した。逃げなくては。 しかしどこへ?")
+  message("\nあなたはバックパックを抱えて北のドアに向かって走り出す。急いで\"openDoor(1)\"と入力しろ! 早く!")
   startTime <- Sys.time()
 }
 
-Lounge <- R6::R6Class("Lounge",
+Lounge <- R6::R6Class("ロビー",
                   inherit = Room,
                   public = list(
                     startScenario = function() {
@@ -314,13 +314,13 @@ Lounge <- R6::R6Class("Lounge",
                   )
 )
 
-Bridge <- R6::R6Class("Bridge",
+Bridge <- R6::R6Class("橋",
                       inherit = Room,
                       public = list(
                         greet = function(directionChosen = NULL) {
                           doorsString <- self$doorsList_toString(directionChosen)
-                          message(paste0("You are crossing ", self$title,
-                                         ".\n", doorsString))
+                          message(paste0("貴方は ", self$title,
+                                         " をくぐった。\n", doorsString))
                         }
                       )
 )
