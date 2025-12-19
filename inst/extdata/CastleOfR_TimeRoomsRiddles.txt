@@ -1,4 +1,7 @@
 name	room	question	solution	val	hint	prepare	cleanup
+r_timeRoom2_1	timeRoom2	"長さ5ですべての要素が2のベクトルを作成し、変数yに格納してください"	"y <- rep(2, 5)"	NA	"2を5回"	NA	"tryCatch(rm(y, envir = globalenv()), warning = function(w) {invisible()})"
+r_timeRoom2_2	timeRoom2	"現在あるオブジェクトを一覧表示してください。"	ls()	NA	Unix風に	"a1 <<- ""a""; b1 <<- ""b""; c1 <<- ""c"""	"tryCatch(rm(a1, b1, c1, envir = globalenv()), warning = function(w) {invisible()})"
+r_timeRoom2_3	timeRoom2	"xという変数に格納されているベクトル要素の中で、-1より大きい要素を判別してください。結果は論理値TRUE/FALSEのベクトルになります。"	x > -1	NA	"結果はTRUE/FALSEの論理値のみを持つベクトル"	"x <<- c(34, -1, -10, 22, -5)"	"tryCatch(rm(x, envir = globalenv()), warning = function(w) {invisible()})"
 r_timeRoom2_4	timeRoom2	変数zに格納されたベクトルの欠損値を0で上書きしてください。	z[is.na(z)] <- 0	NA	?is.na	"z <<- c(""a"", NA, 1, TRUE, NA)"	"tryCatch(rm(z, envir = globalenv()), warning = function(w) {invisible()})"
 r_timeRoom2_5	timeRoom2	変数vから欠損値を除外して、ベクトルの和を表示しなさい。	"sum(v, na.rm = TRUE)"	NA	na.rm	v <<- runif(5); v[6] <<- NA	"tryCatch(rm(v, envir = globalenv()), warning = function(w) {invisible()})"
 r_timeRoom3_6	timeRoom3	変数Aに格納された行列の逆行列を表示してください。	solve(A)	NA	速度重視で	"A <<- matrix(c(1:4, 9, 8, 5, 6, 7), c(3, 3))"	"tryCatch(rm(A, envir = globalenv()), warning = function(w) {invisible()})"
