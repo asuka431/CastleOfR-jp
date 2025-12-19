@@ -12,11 +12,11 @@
 #' @export
 startGame <- function(...){
   if (exists(".gameOn")) {
-    message("Game is already on, you can endGame() and come back later.")
+    message("ゲームはすでに起動しています。endGame() と入力してあとから再開できます。")
     invisible()
   } else {
     removeTaskCallback("CastleOfR")
-    message("Before you start, can I clean your workspace and plots?")
+    message("始める前に変数とプロットをクリーンアップしますか?")
     cleanAns <- menu(c("yes", "no")) == 1
     if (cleanAns) {
       graphics.off()
@@ -33,9 +33,9 @@ startGame <- function(...){
     game <- if (continue) {
       readRDS(file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))
     } else {
-      message("あなたはRの城に居るRﾁｬﾝに、お茶会へ来ませんか、と招待を受け取った。")
+      message("あなたはアール城に住むアール婦人から、お茶会への招待を受け取った。")
       message("貴方のR言語に対する習熟度は?")
-      playerLevel <- menu(c("あぁ、なんでもできる程度です",
+      playerLevel <- menu(c("ﾁｮｯﾄﾜｶﾙ(上級者用)",
                             "かなり使いこなせます",
                             "ちょっと慣れてきた",
                             "Rって何ですか"))
