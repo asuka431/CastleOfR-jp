@@ -8,13 +8,13 @@ initializeGame <- function(playerLevel) {
   game <- new.env(globalenv())
     
   #lounge
-  lounge <- Lounge$new("ロビー", "ロビー", "1", NA)
+  lounge <- Lounge$new("lounge", "ロビー", "1", NA)
   lounge$set_objects(list(Object$new("ティーカップ", "テーブルの上", "R力", 3,
                                      Riddle$new("0 + 0は?", "0 + 0", 0,
                                                 "0..."))))
   
   #bridge
-  bridge <- Bridge$new("橋", "運命の橋", "4", NA)
+  bridge <- Bridge$new("bridge", "運命の橋", "4", NA)
   
   # rooms
   rooms_file <- system.file("extdata", "CastleOfR_Rooms.txt",
