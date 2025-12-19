@@ -33,7 +33,12 @@ Room <- R6::R6Class("Room",
                     self$additionalCommentToGreetMessage <- comment
                   },
                   countLockedDoors = function() {
-                    sum(sapply(self$door, function(door) !door$open))
+                    doors <- self$door
+                    if (is.null(doors)) return(0)
+                    # if a single Door object was set, wrap it into a list for iteration
+                    if (inherits(doors, "Door")) doors <- list(doors)
+                    # use vapply to guarantee a logical(1) result for each element
+                    sum(vapply(doors, function(door) !isTRUE(door$open), logical(1)))
                   },
                   doorsList_toString = function(directionChosen) {
                     l <- self$door
