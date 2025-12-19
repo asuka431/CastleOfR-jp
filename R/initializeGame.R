@@ -8,13 +8,13 @@ initializeGame <- function(playerLevel) {
   game <- new.env(globalenv())
     
   #lounge
-  lounge <- Lounge$new("lounge", "The Lounge", "1", NA)
-  lounge$set_objects(list(Object$new("teacup", "on the table", "power", 3,
-                                     Riddle$new("what is 0 + 0?", "0 + 0", 0,
-                                                "zero..."))))
+  lounge <- Lounge$new("ロビー", "ロビー", "1", NA)
+  lounge$set_objects(list(Object$new("ティーカップ", "テーブルの上", "R力", 3,
+                                     Riddle$new("0 + 0は?", "0 + 0", 0,
+                                                "0..."))))
   
   #bridge
-  bridge <- Bridge$new("bridge", "The Bridge of Doom", "4", NA)
+  bridge <- Bridge$new("橋", "運命の橋", "4", NA)
   
   # rooms
   rooms_file <- system.file("extdata", "CastleOfR_Rooms.txt",
@@ -161,23 +161,23 @@ initializeGame <- function(playerLevel) {
   
   whatDoIHave <- function() {
     if (length(game$satchel) > 0) {
-      message(paste0("In your satchel: ",
+      message(paste0("バックパックには... ",
                      paste(lapply(game$satchel, function(obj) obj$name),
                            collapse = ", "),
                      "."))
     } else {
-      "You have an empty satchel."
+      "バックパックには...何もない!."
     }
-    message(paste0("You have ", game$RPower, " points of R Power."))
+    message(paste0("あなたのR力は", game$RPower, " pointだ。"))
     if (length(game$floorMapsPlayer) > 0) {
       if (length(game$floorMapsPlayer) == 1) {
-        message(paste0("And a map to floor ", names(game$floorMapsPlayer)[1], "."))
+        message(paste0("そして ", names(game$floorMapsPlayer)[1], "階の地図を持っている"))
       } else {
-        message(paste0("And maps to floors: ",
-                       paste0(names(game$floorMapsPlayer), collapse = ", "), "."))
+        message(paste0("そして",
+                       paste0(names(game$floorMapsPlayer), collapse = ", "), "階の地図を持っている"))
       }
     } else {
-      message("And no maps.")
+      message("そして地図は持っていない。")
     }
   }
   
@@ -185,13 +185,13 @@ initializeGame <- function(playerLevel) {
     if (!is.null(game$riddle)) {
       game$riddle$askQuestion()
     } else {
-      message("You haven't been asked a question. Yet.")
+      message("問題は まだ 出ていない。")
     }
   }
   
   removeNObjectsFromSatchel <- function(n) {
     for (obj in 1:n) {
-      message(paste0("Please select object ", obj, ":"))
+      message(paste0("捨てるものを選んでください ", obj, ":"))
       objIdx <- menu(lapply(game$satchel, function(obj) obj$name))
       game$satchel <- game$satchel[-objIdx]
     }
@@ -199,18 +199,18 @@ initializeGame <- function(playerLevel) {
   
   endGame <- function(endMessage = NULL, requestedByGame = TRUE) {
     if (!requestedByGame && class(game$currentRoom)[1] %in% c("TimeRoom", "DarkRoom")) {
-      message("Can't end game in this room.")
+      message("この部屋ではゲーム終了は不可能だ。")
       return(FALSE)
     } else {
       message(endMessage)
       if (is.null(game$mode) || !game$mode %in% c("time", "dark", "lose", "win")) {
-        message("Save game so you can come back later and pick up from where you left?")
+        message("セーブして、中断したところから再開できるようにする?")
         saveAns <- menu(c("yes", "no")) == 1
         if (saveAns) {
           saveRDS(game, file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))
         }
       }
-      message("Before you go, can I clean your workspace and plots?")
+      message("終了前にワークスペースとプロットを削除する?")
       cleanAns <- menu(c("yes", "no")) == 1
       if (cleanAns) {
         graphics.off()
@@ -239,10 +239,10 @@ initializeGame <- function(playerLevel) {
       if (toString(map_idx) %in% names(game$floorMapsPlayer)) {
         game$plotMap(game$floorMapsPlayer[[toString(map_idx)]])
       } else {
-        message("You don't have the map to floor ", map_idx)
+        message(map_idx, "階の地図は持っていない。")
       }
     } else {
-      message("No such floor.")
+      message("そんな階はない。")
     }
   }
   
@@ -272,8 +272,8 @@ initializeGame <- function(playerLevel) {
   }
   
   teacupScenario <- function() {
-    message("\"Do you have my teacup?\"")
-    ansTeacup <- menu(c("yes", "no", "I need to check"))
+    message("\"私のティーカップ持ってる?\"")
+    ansTeacup <- menu(c("yes", "no", "確認する"))
     isTeacup <- isObjectInSatchel("teacup")
     wasTeacup <- wasObjectInSatchel("teacup")
     if (ansTeacup == 1) {
@@ -282,10 +282,10 @@ initializeGame <- function(playerLevel) {
         return(TRUE)
       } else {
         if (wasTeacup) {
-          game$loseScenario("\"Of course not! You gave it away in one of the Dark Rooms!\"\nThe R dragon flaps her wings and off she goes, leaving you behind.")
+          game$loseScenario("\"当然だ! 暗闇の間かどこかでポイしちゃったんだから!\"\nアールドラゴンは翼を翻し、あなたをおいて飛び去っていった...。")
           return(TRUE)
         } else {
-          message("You're lying! If you ever want to escape this castle I suggest you go get me my teacup!")
+          message("嘘じゃん! もしこの城から逃げたいなら、私のティーカップを取りに行くことをお勧めするね！")
           return(FALSE)
         }
       }
@@ -295,15 +295,15 @@ initializeGame <- function(playerLevel) {
         return(TRUE)
       } else {
         if (wasTeacup) {
-          game$loseScenario("\"Of course not! You gave it away in one of the Dark Rooms!\"\nThe R dragon flaps her wings and off she goes, leaving you behind.")
+          game$loseScenario("\"当然だ! 暗闇の間かどこかでポイしちゃったんだから!\"\nアールドラゴンは翼を翻し、あなたをおいて飛び去っていった...。")
           return(TRUE)
         } else {
-          message("\"Well, if you ever want to escape this castle I suggest you go get me my teacup!\", says the R Dragon as she flies away.")
+          message("\"そう、もしこの城から逃げたいなら、私のティーカップを取りに行くことをお勧めするね！\"そう言いながらアールドラゴンは飛び去っていった。")
           return(FALSE)
         }
       }
     } else {
-      message("\"Please do. When you're ready, summon the R Dragon again\", says the R Dragon as she flies away.")
+      message("\"そうして。準備ができたらもう一度アールドラゴン召喚を試してね。\"そう言いながらアールドラゴンは飛び去っていった。")
       return(FALSE)
     }
   }
@@ -311,25 +311,25 @@ initializeGame <- function(playerLevel) {
   summonRDragon <- function() {
     if (game$escapeRoom$name == game$currentRoom$name) {
       if (game$dragonSeen) {
-        message("The R Dragon flies to the Castle roof again.")
+        message("アールドラゴンは再び城の屋根に降り立った。")
       } else {
         game$dragonSeen <- TRUE
-        message("Look through the Tower window.")
-        message("A magnificent dragon is flying your way. You thought the stories weren't true...")
-        message("\nThe R Dragon!\nShe is landing with all her glory on the Castle roof. She is asking you:")
+        message("塔の窓から見える。")
+        message("雄大な竜がこちらへ飛んでくる。あなたはおとぎ話を信じる人では無いのだが...")
+        message("\nアールドラゴンだ!\nドラゴンは城の屋根に降り立ち、あなたを見下ろしながら。重々しく言った。")
       }
-      message("\"What is the password?\"")
+      message("\"合言葉は。\"")
       #message(paste0("pwd is: ", paste0(game$pwd, collapse = "")))
       inputPwd <- readline()
       if (game$isPasswordCorrect(inputPwd)) {
-        message("Password is correct.")
+        message("そのとおり。")
         return(game$teacupScenario())
       } else {
-        message("\"That's not the right password! Are you trying to fool the R dragon?!\" The R Dragon flies away.")
+        message("\"合言葉が違う。アールドラゴンに嘘をつくなんて信じらんない?!\" アールドラゴンは飛び去った。")
         return(FALSE)
       }
     } else {
-      message("You have not reached the Room from which you can escape.")
+      message("外に出られる場所に行かなくては。")
       return(FALSE)
     }
   }
@@ -343,28 +343,28 @@ initializeGame <- function(playerLevel) {
     if (!is.null(game$riddle)) {
       RPowerCost <- ifelse(type == "hint", game$hintRPower, game$solutionRPower)
       if (game$RPower >= RPowerCost) {
-        message(paste0("Are you sure you want to spend R Power on this ",
-                       type, " (", RPowerCost, " points)?"))
+        message(paste0("本当にこの ",
+                       type, " にR力を使用する?(", RPowerCost, " points)"))
         payRPower <- menu(c("yes", "no")) == 1
         if (payRPower) {
           if(type == "hint") {
-            message(paste0("Hint: ", game$riddle$hint))
+            message(paste0("ヒント: ", game$riddle$hint))
           } else {
-            message(paste0("Solution: ", game$riddle$solution))
+            message(paste0("解法: ", game$riddle$solution))
           }
           game$RPower <- game$RPower - RPowerCost
         }
       } else {
-        message(paste0("You do not have enough R Power for this", type, " (",
-                       RPowerCost, " point)"))
+        message(paste0("R力が足りない!この", type, " には(",
+                       RPowerCost, " point)必要だ。"))
       }
     } else {
-      message("No  question.")
+      message("今問題は出ていない。")
     }
   }
   
   timeLeft <- function() {
-    message(paste0("Lady R is coming to this room in ",
+    message(paste0("アール婦人はこの部屋にあと ",
                    strftime(
                      as.POSIXct(
                        as.numeric(
@@ -372,24 +372,24 @@ initializeGame <- function(playerLevel) {
                                     60 * game$currentRoom$timeLimit,
                                   Sys.time(), units = "sec")),
                        origin = Sys.Date()),
-                     format = "%M:%S"), " minutes!"))
+                     format = "%M:%S"), " 分で来る！"))
   }
   
   loseScenario <- function(loseMessage = NULL) {
     message(loseMessage)
-    message("You can hear Lady R's crazy laughter right behind you.")
-    message("You turn around and you see her waiving that knife.")
-    message("\"Game over!\" she's shouting with her screeching voice, \"Move my lovely R gimp, move!\"")
-    message("She leads you through the Castle to the Prison Tower, where you will spend the rest of your days multiplying matrices and munging data for the Lady.")
-    message("That is, until the next R gimp comes...")
+    message("ババアの狂った笑いが背後で聞こえた。")
+    message("振り返ると、彼女が包丁を振っているのが見える。")
+    message("\"ゲームオーバー!\"彼女は狂ったように叫んでいる。\"歩け!歩け私のR奴隷!\"")
+    message("ババアはお前を城から牢獄塔へと連れて行きます。あなたは残りの人生を、激ダルい行列の乗算やデータ処理に費やすことになります。")
+    message("次の犠牲者となるRユーザーが現れるまで...。")
     game$mode <- "lose"
     game$endGame()
   }
   
   winScenario <- function() {
-    message("\"Ah, my wonderful teacup. Did you know dragons absolutley love tea?\"")
-    message("The R Dragon lets you climb on her back. While she sets off from the Castle roof you can see Lady R waving her hands and cursing \"You'll be back! They all do!\"")
-    message("Congratulations. You escaped the Castle of R at the last minute.\n\nYou are truly a knight of R.")
+    message("\"わー私のお気に入りのティーカップ。ドラゴン達はみんなお茶に目がないって知ってた?\"")
+    message("アールドラゴンはあなたを背中に乗せてくれた。城の屋根から飛び立つあなた達の背後から、ババアの恨めしい叫びが聞こえる。\"お前は戻ってくる!どうせ皆リプレイするんだ!\"")
+    message("おめでとうございます。あなたは間一髪、アールの城からの脱出に成功したようです。.\n\nまさにナイト・オブ・アールの伝説のとおりです。")
     game$mode <- "win"
     game$endGame()
     return(TRUE)
@@ -414,7 +414,7 @@ initializeGame <- function(playerLevel) {
         }
         game$riddle$askQuestion()
       } else {
-        message("Door is open.")
+        message("ドアは開いている")
         game$directionChosen <-
           game$currentRoom$door[[game$door_idx]]$getDirection(game$currentRoom$name)
         game$previousRoom <- game$currentRoom
@@ -432,17 +432,17 @@ initializeGame <- function(playerLevel) {
           if (!is.na(game$riddle$prepare)) {
             eval(parse(text = game$riddle$prepare))
           }
-          message(paste0("Question ", game$trRiddleIdx, " out of ",
-                         length(game$currentRoom$riddle), ":"))
+          message(paste0("問題 ", game$trRiddleIdx, " を ",
+                         length(game$currentRoom$riddle), "で割ると:"))
           game$riddle$askQuestion()
         } else if (class(game$currentRoom)[1] == "DarkRoom") {
           game$mode <- "dark"
           game$currentRoom$greet(game$directionChosen)
           if (length(game$satchel) >= game$currentRoom$nObjectsLeave) {
             # subtract necessary objects and go back to previous room
-            message("Yes you do!")
+            message("正解!")
             game$removeNObjectsFromSatchel(game$currentRoom$nObjectsLeave)
-            message("Great! You're drawn back to the previous room.\n")
+            message("素晴らしい! あなたは前の部屋に引き戻される。\n")
             game$directionChosen <-
               game$previousRoom$door[[game$door_idx]]$getDirection(game$currentRoom$name)
             game$currentRoom <- game$previousRoom
@@ -456,11 +456,11 @@ initializeGame <- function(playerLevel) {
             game$riddle <- NULL
             game$nextRoom <- NULL
           } else {
-            loseMessage <- paste0("Oh no, ", ifelse(length(game$satchel) == 0,
-                                                    "you don't have any",
-                                                    paste0("you only have ",
+            loseMessage <- paste0("おっと、 ", ifelse(length(game$satchel) == 0,
+                                                    "あなたは",
+                                                    paste0("を持っていないようだ。バックパックには",
                                                            length(game$satchel))),
-                                  " objects in your satchel.")
+                                  "が入っている。")
             game$loseScenario(loseMessage)
             return(TRUE)
           }
@@ -472,7 +472,7 @@ initializeGame <- function(playerLevel) {
         }
       }
     } else {
-      message("No such door.")
+      message("そんな扉はない")
     }
   }
   
@@ -485,9 +485,9 @@ initializeGame <- function(playerLevel) {
       game$currentRoom$set_timeLimit(game$roomTimeLimit +
                                        game$currentRoom$countLockedDoors() *
                                        game$lockedDoorDelay)
-      message("Door locked.")
+      message("ドアには鍵がかかっている")
     } else {
-      message("No such door.")
+      message("そんな扉はない")
     }
   }
   
@@ -505,10 +505,10 @@ initializeGame <- function(playerLevel) {
         }
         game$riddle$askQuestion()
       } else {
-        message("object taken")
+        message("アイテムを取った")
       }
     } else {
-      message("No such object.")
+      message("そんなアイテムはない")
     }
   }
   
@@ -516,7 +516,7 @@ initializeGame <- function(playerLevel) {
     if (game$deparsedExpr == game$riddle$solution ||
         (is.numeric(game$val) && !is.na(game$riddle$val) &&
          game$val == game$riddle$val)) {
-      message("Correct!")
+      message("正解!")
       if (!is.na(game$riddle$cleanup)) {
         eval(parse(text = game$riddle$cleanup))
       }
@@ -525,9 +525,9 @@ initializeGame <- function(playerLevel) {
           game$currentRoom$door[[game$door_idx]]$getDirection(game$currentRoom$name)
         
         doorOpensMessage <- switch(game$directionChosen,
-                                   "up" = "Hatch to an upper floor opens.",
-                                   "down" = "Hatch to a lower floor opens.",
-                                   paste0("Door to ", game$directionChosen, " opens."))
+                                   "up" = "上の階へのハッチが開く。",
+                                   "down" = "下の階へのハッチが開く。",
+                                   paste0(game$directionChosen, "へのドアが開く。"))
         message(doorOpensMessage)
         game$previousRoom <- game$currentRoom
         game$currentRoom$door[[game$door_idx]]$openDoor()
@@ -548,17 +548,17 @@ initializeGame <- function(playerLevel) {
           if (!is.na(game$riddle$prepare)) {
             eval(parse(text = game$riddle$prepare))
           }
-          message(paste0("Question ", game$trRiddleIdx, " out of ",
-                         length(game$currentRoom$riddle), ":"))
+          message(paste0("問題 ", game$trRiddleIdx, " を ",
+                         length(game$currentRoom$riddle), "で割ると:"))
           game$riddle$askQuestion()
         } else if (class(game$currentRoom)[1] == "DarkRoom") {
           game$mode <- "dark"
           game$currentRoom$greet(game$directionChosen)
           if (length(game$satchel) >= game$currentRoom$nObjectsLeave) {
             # subtract necessary R Power and go back to previous room
-            message("Yes you do!")
+            message("正解!")
             game$removeNObjectsFromSatchel(game$currentRoom$nObjectsLeave)
-            message("Great! You're drawn back to the previous room.\n")
+            message("すばらしい! あなたは前の部屋に引き戻される。\n")
             game$directionChosen <-
               game$previousRoom$door[[game$door_idx]]$getDirection(game$currentRoom$name)
             game$currentRoom <- game$previousRoom
@@ -570,11 +570,11 @@ initializeGame <- function(playerLevel) {
             game$roomStartTime <- Sys.time()
             game$mode <- NULL
           } else {
-            loseMessage <- paste0("Oh no, ", ifelse(length(game$satchel) == 0,
-                                                    "you don't have any",
-                                                    paste0("you only have ",
+            loseMessage <- paste0("おっと、 ", ifelse(length(game$satchel) == 0,
+                                                    "あなたは",
+                                                    paste0("を持っていないようだ。バックパックには ",
                                                            length(game$satchel))),
-                                  " objects in your satchel.")
+                                  " が入っている。")
             game$loseScenario(loseMessage)
             return(TRUE)
           }
@@ -582,21 +582,21 @@ initializeGame <- function(playerLevel) {
           game$currentRoom$greet(game$directionChosen)
         }
       } else if (game$mode == "object") {
-        message(paste0("You take the ", game$currentRoom$object[[game$object_idx]]$name,
-                       " and put it in your satchel."))
+        message(paste0("あなたは", game$currentRoom$object[[game$object_idx]]$name,
+                       " を取り、バックパックにしまった。"))
         game$currentRoom$object[[game$object_idx]]$takeObject()
         game$satchel <- c(game$satchel, game$currentRoom$object[[game$object_idx]])
         game$satchelHist <- c(game$satchelHist, game$currentRoom$object[[game$object_idx]])
         objType <- game$currentRoom$object[[game$object_idx]]$type
         if (objType == "power") {
-          message(paste0("You gained ",
+          message(paste0("あなたはR力を",
                          game$currentRoom$object[[game$object_idx]]$points,
-                         " points of R Power!"))
+                         " points ゲットした!"))
           game$RPower <- game$RPower + game$currentRoom$object[[game$object_idx]]$points
         } else if (objType == "pwd") {
-          message(paste0("There's something written on the ",
+          message(paste0("何か",
                          game$currentRoom$object[[game$object_idx]]$name,
-                         ". Look at the plot window."))
+                         "に書いてある。描画ウィンドウを見てみよう。"))
           nextPwdIdx <- ifelse(length(game$pwdExposedIdx) == length(game$pwd) - 1,
                                setdiff(1:length(game$pwd), game$pwdExposedIdx),
                                sample(setdiff(1:length(game$pwd),
@@ -604,9 +604,9 @@ initializeGame <- function(playerLevel) {
           game$pwdExposedIdx <- c(game$pwdExposedIdx, nextPwdIdx)
           game$plotPwd()
         } else if (objType == "tip") {
-          message(paste0("There's something written on the ",
+          message(paste0("何か ",
                          game$currentRoom$object[[game$object_idx]]$name,
-                         ": ", game$currentRoom$object[[game$object_idx]]$riddle$tip))
+                         "に描かれている。: ", game$currentRoom$object[[game$object_idx]]$riddle$tip))
         } else if (objType == "map") {
           newMapIdx <- game$currentRoom$object[[game$object_idx]]$riddle$floorMapsIdx
           mapsNames <- names(game$floorMapsPlayer)
@@ -614,9 +614,9 @@ initializeGame <- function(playerLevel) {
             game$floorMapsPlayer[[length(game$floorMapsPlayer) + 1]] <-
               game$floorMapsAvailable[[newMapIdx]]
             names(game$floorMapsPlayer) <- c(mapsNames, newMapIdx)
-            message(paste0("It's a map! To see it enter seeMap(", newMapIdx, ")"))
+            message(paste0("地図のようだ!閲覧には seeMap(", newMapIdx, ")と入力しよう。"))
           } else {
-            message("It's a map, but you already have it.")
+            message("地図のようだが、 すでに持っている物のようだ。")
           }
         }
         game$object_idx <- NULL
@@ -631,10 +631,10 @@ initializeGame <- function(playerLevel) {
             game$floorMapsPlayer[[length(game$floorMapsPlayer) + 1]] <-
               game$floorMapsAvailable[[newMapIdx]]
             names(game$floorMapsPlayer) <- c(mapsNames, newMapIdx)
-            message(paste0("You got a map! To see it enter seeMap(",
-                           newMapIdx, ")\n\nReturning to previous room."))
+            message(paste0("地図を手に入れた! 閲覧には seeMap(",
+                           newMapIdx, ")と入力しよう。\n\n前の部屋に戻った。"))
           } else {
-            message("You already have this map...\n\nReturning to previous room.")
+            message("地図のようだが、すでに持っているようだ...\n\n前の部屋に戻った。")
           }
           # return to previous room
           game$directionChosen <-
@@ -654,8 +654,8 @@ initializeGame <- function(playerLevel) {
           if (!is.na(game$riddle$prepare)) {
             eval(parse(text = game$riddle$prepare))
           }
-          message(paste0("Question ", game$trRiddleIdx, " out of ",
-                         length(game$currentRoom$riddle), ":"))
+          message(paste0("問題 ", game$trRiddleIdx, " を ",
+                         length(game$currentRoom$riddle), "で割ると:"))
           game$riddle$askQuestion()
         }
       }
