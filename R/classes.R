@@ -281,9 +281,9 @@ DarkRoom <- R6::R6Class("DarkRoom",
                         self$nObjectsLeave <- as.numeric(nObjectsLeave)
                       },
                       greet = function(directionChosen = NULL) {
-                        message(paste0("残念! 追いつかれてしまった。", self$title,
-                                       "!\n\n何も見えない中...\n\nふいに、小さなろうそくの火があなたのほうに近づいてきた。\nあっ!あれはアール婦人だ!! 彼女は狂ったように笑いながらあなためがけて近づいてくる!!\n\n急がないと! 引き返すにはここでアイテム",
-                                       self$nObjectsLeave, " 個を置いていくことになる!バックパックにある分のアイテムで足りるだろうか?"))
+                        message(paste0("残念! ", self$title, "に入ってしまった!",
+                                       "\n\n何も見えない中...\n\nふいに、小さなろうそくの火があなたのほうに近づいてきた。\nあっ!あれはアール婦人だ!! 彼女は狂ったように笑いながらあなためがけて近づいてくる!!\n\n急がないと! 引き返すにはアイテムを",
+                                       self$nObjectsLeave, " 個投げて気を逸らすしかない!\nバックパックにある分のアイテムで足りるだろうか?"))
                       }
                     )
 )
@@ -293,7 +293,7 @@ gameStartScenario <- function() {
   message("\nCastle of Rは 'An Introduction to R' 著者の Venables, Smith と R Core Team によるテキストベース な アドベンチャーです。 このゲームはRの基本能力を確認するためのものです。")
   message("\nゲーム中にendGame()と入力すれば(基本的に)いつでも中断して退出が可能です。それでは始まりです。")
   message("\nあなたは城の1階、ロビーにいます。\nあなたの正面には、アール城の持ち主である アール婦人 というやさしそうな老婦人が座っています。\nあなたの後ろの窓からはアール城の美しい庭園が見えることでしょう。\n正面のアール婦人の肩越しに、北側に続くドアが見えます。")
-  message("アール婦人は貴方に名前を訪ねます。\n入力してください：")
+  message("不意に、アール婦人があなたの名前を呼びます。\n\n名前を入力してください：")
   playerName <- readline()
   message(paste0("\"お会いできてとっても嬉しいわ ", playerName, ". お茶はいかがかしら?\""))
   tea <- menu(c("yes", "no")) == 1
