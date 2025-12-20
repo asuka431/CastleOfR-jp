@@ -44,7 +44,7 @@ Room <- R6::R6Class("Room",
                     l <- self$door
                     s <- ""
                     if (!is.null(l) && is.list(l) && length(l) > 0) {
-                      s <- paste0(s, "You see ")
+                      s <- paste0(s, "まわりには ")
                       if (length(l) == 1) {
                         s <- paste0(s,
                                     l[[1]]$toString(self$name, directionChosen),
@@ -61,8 +61,8 @@ Room <- R6::R6Class("Room",
                                         paste0(
                                           " (", numbers[-length(l)], ")"),
                                         collapse = ", "),
-                                      " and ", doorStrings[length(l)],
-                                      " (", numbers[length(l)], ")."))
+                                      " と、 ", doorStrings[length(l)],
+                                      " (", numbers[length(l)], ") がある。"))
                       }
                     }
                     return(s)
@@ -76,7 +76,7 @@ Room <- R6::R6Class("Room",
                       l <- l[takenObjectsIdx]
                       numbers <- numbers[takenObjectsIdx]
                       if (length(l) > 0) {
-                        s <- paste0(s, "Around you, you see ")
+                        s <- paste0(s, "周りを見渡す：そこには ")
                         if (length(l) == 1) {
                           s <- paste0(s, l[[1]]$toString(), " (", numbers[1], ").")
                         } else {
@@ -88,20 +88,21 @@ Room <- R6::R6Class("Room",
                                           paste0(
                                             " (", numbers[-length(l)], ")"),
                                           collapse = ", "),
-                                        " and ", objStrings[length(l)],
-                                        " (", numbers[length(l)], ")."))
+                                        " と、 ", objStrings[length(l)],
+                                        " (", numbers[length(l)], ") がある。"))
                         }
                       }
                     }
                     return(s)
                   },
                   greet = function(directionChosen = NULL) {
-                    floorNum <- switch(self$floor, "1" = "1st", "2" = "2nd",
-                                       "3" = "3rd", "4" = "4th")
+                    # no needo to translate floor numbers when japanese, but just in case:
+                    floorNum <- switch(self$floor, "1" = "一", "2" = "二",
+                                       "3" = "三", "4" = "四")
                     objectsString <- self$objectsList_toString()
                     doorsString <- self$doorsList_toString(directionChosen)
-                    message(paste0("You are in ", self$title, ", ", floorNum,
-                                   " floor.\n",
+                    message(paste0("あなたは今 ", floorNum, "階の、 ", self$title,
+                                   " 居る。\n",
                                    objectsString,
                                    ifelse(objectsString == "", doorsString, paste0("\n", doorsString)),
                                    ifelse(is.na(self$additionalCommentToGreetMessage), "",
@@ -162,16 +163,16 @@ Door <- R6::R6Class("Door",
                   toString = function(room, directionChosen) {
                     currentDirection <- self$getDirection(room)
                     s <- switch(currentDirection,
-                           "north" = "a door to the north",
-                           "south" = "a door to the south",
-                           "east" = "a door to the east",
-                           "west" = "a door to the west",
-                           "up" = "a hatch in the ceiling to an upper floor",
-                           "down" = "a hatch on the ground to a lower floor")
+                           "north" = "北に続く扉",
+                           "south" = "南に続く扉",
+                           "east" = "東に続く扉",
+                           "west" = "西に続く扉",
+                           "up" = "上に続くハッチ",
+                           "down" = "下に続くハッチ")
                     if (!is.null(directionChosen)) {
                       reverseDirectionChosen <- self$reverseDirection(directionChosen)
                       if (reverseDirectionChosen == currentDirection) {
-                        s <- paste0(s, " (where you just came from)")
+                        s <- paste0(s, " (今来た方向)")
                       }
                     }
                     return(s)
@@ -194,6 +195,7 @@ Object <- R6::R6Class("Object",
                       self$points <- as.numeric(points)
                       self$riddle <- riddle
                     },
+                    # string representation of the object. not nessarily on japanese
                     toString = function() {
                       prefix <- ifelse(grepl("^[aeiou]", self$name), "an", "a")
                       paste0(prefix, " ", self$name, " ", self$location)
@@ -257,13 +259,13 @@ TimeRoom <- R6::R6Class("TimeRoom",
                         invisible()
                       },
                       greet = function(alreadyHasMap = FALSE) {
-                        message(paste0("Oh oh. You reached ", self$title,
-                                       ".\n\nThis means you have ",
-                                       self$timeLimit, " minutes to answer these ",
+                        message(paste0("おっと、追いつかれたようだ。", self$title,
+                                       ".\n\nつまりあなたには",
+                                       self$timeLimit, " 分でこれら ",
                                        length(self$riddle),
-                                       " questions.\nIf you don't make it - Lady R will get you.\nBut if you do - you will return to the previous room ",
-                                       ifelse(!alreadyHasMap, "with a valuable\npiece of information.",
-                                              "(with nothing 'cause you've already been here!)."), "\n"))
+                                       " の問題にこたえなくては。\nもし失敗したら... アール婦人に追いつかれてしまう。\n成功すれば... 前の部屋に戻れる。",
+                                       ifelse(!alreadyHasMap, "ここでゲットしたいろんな情報も持っていこう。",
+                                              "(すでに持ってるのにまた来ただけかもしれないけど!)."), "\n"))
                       }
                     )
 )
@@ -279,9 +281,9 @@ DarkRoom <- R6::R6Class("DarkRoom",
                         self$nObjectsLeave <- as.numeric(nObjectsLeave)
                       },
                       greet = function(directionChosen = NULL) {
-                        message(paste0("Damn! You reached ", self$title,
-                                       "!\n\nYou can't see a thing.\n\nSuddenly, you see a small candle light approaching towards you.\nOh no! It's Lady R! She's laughing maniacally and is coming towards you!\n\nQuick! To go back you must leave behind ",
-                                       self$nObjectsLeave, " objects. Do you have enough stuff in your satchel to go back?"))
+                        message(paste0("残念! 追いつかれてしまった。", self$title,
+                                       "!\n\n何も見えない中...\n\nふいに、小さなろうそくの火があなたのほうに近づいてきた。\nあっ!あれはアール婦人だ!! 彼女は狂ったように笑いながらあなためがけて近づいてくる!!\n\n急がないと! 引き返すにはここでアイテム",
+                                       self$nObjectsLeave, " 個を置いていくことになる!バックパックにある分のアイテムで足りるだろうか?"))
                       }
                     )
 )
@@ -291,14 +293,14 @@ gameStartScenario <- function() {
   message("\nCastle of Rは 'An Introduction to R' 著者の Venables, Smith と R Core Team によるテキストベース な アドベンチャーです。 このゲームはRの基本能力を確認するためのものです。")
   message("\nゲーム中にendGame()と入力すれば(基本的に)いつでも中断して退出が可能です。それでは始まりです。")
   message("\nあなたは城の1階、ロビーにいます。\nあなたの正面には、アール城の持ち主である アール婦人 というやさしそうな老婦人が座っています。\nあなたの後ろの窓からはアール城の美しい庭園が見えることでしょう。\n正面のアール婦人の肩越しに、北側に続くドアが見えます。")
-  message("アール婦人は貴方に名前を訪ねます。")
+  message("アール婦人は貴方に名前を訪ねます。\n入力してください：")
   playerName <- readline()
   message(paste0("\"お会いできてとっても嬉しいわ ", playerName, ". お茶はいかがかしら?\""))
   tea <- menu(c("yes", "no")) == 1
   if (tea) {
     message("アール婦人はカップにお茶を注ぐ。お茶を飲むと、カップの底に奇妙なメッセージが見えた。...\n      \"ヨメ\"\n")
   }
-  message("Lady R says:\"ビスケットもどうぞ?\"")
+  message("アール婦人:\"ビスケットもどうぞ?\"")
   biscuits <- menu(c("yes", "no")) == 1
   if (biscuits) {
     message("アール婦人は貴方にビスケットの小皿を勧める。 貴方はビスケットを食べ進めると、皿の真ん中に有るメッセージが見えた。...\n      \"ハシレ\"")
