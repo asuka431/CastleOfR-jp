@@ -8,7 +8,7 @@ react <- function(game, ...){
   # if time is up
   if (difftime(Sys.time(), game$roomStartTime, units = "mins") >
       game$currentRoom$timeLimit) {
-    game$loseScenario("Too late.")
+    game$loseScenario("遅かった...")
     return(TRUE)
   }
   
