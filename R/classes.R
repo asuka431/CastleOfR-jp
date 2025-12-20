@@ -76,9 +76,9 @@ Room <- R6::R6Class("Room",
                       l <- l[takenObjectsIdx]
                       numbers <- numbers[takenObjectsIdx]
                       if (length(l) > 0) {
-                        s <- paste0(s, "周りを見渡す：そこには ")
+                        s <- paste0(s, "周りを見渡す\nそこには ")
                         if (length(l) == 1) {
-                          s <- paste0(s, l[[1]]$toString(), " (", numbers[1], ").")
+                          s <- paste0(s, l[[1]]$toString(), " (", numbers[1], ") ある。")
                         } else {
                           objStrings <- lapply(l, function(x) x$toString())
                           s <- paste0(s,
@@ -88,8 +88,8 @@ Room <- R6::R6Class("Room",
                                           paste0(
                                             " (", numbers[-length(l)], ")"),
                                           collapse = ", "),
-                                        " と、 ", objStrings[length(l)],
-                                        " (", numbers[length(l)], ") がある。"))
+                                        " 、 ", objStrings[length(l)],
+                                        " (", numbers[length(l)], ") ある。"))
                         }
                       }
                     }
@@ -101,8 +101,8 @@ Room <- R6::R6Class("Room",
                                        "3" = "三", "4" = "四")
                     objectsString <- self$objectsList_toString()
                     doorsString <- self$doorsList_toString(directionChosen)
-                    message(paste0("あなたは今 ", floorNum, "階の、 ", self$title,
-                                   " 居る。\n",
+                    message(paste0("あなたは今", floorNum, "階の ", self$title,
+                                   " に居る。\n",
                                    objectsString,
                                    ifelse(objectsString == "", doorsString, paste0("\n", doorsString)),
                                    ifelse(is.na(self$additionalCommentToGreetMessage), "",
@@ -197,8 +197,8 @@ Object <- R6::R6Class("Object",
                     },
                     # string representation of the object. not nessarily on japanese
                     toString = function() {
-                      prefix <- ifelse(grepl("^[aeiou]", self$name), "an", "a")
-                      paste0(prefix, " ", self$name, " ", self$location)
+                      # prefix <- ifelse(grepl("^[aeiou]", self$name), "an", "a")
+                      paste0(self$name, " が ", self$location, "に")
                     },
                     takeObject = function() {
                       self$taken <- TRUE
