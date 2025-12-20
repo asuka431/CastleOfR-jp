@@ -27,7 +27,7 @@ startGame <- function(...){
     continue <- FALSE
     playerLevel <- NULL
     if (file.exists(file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))) {
-      message("You've been here before. Pick up from where you left?")
+      message("前に来た時のデータがあります。前の続きから始めますか?")
       continue <- menu(c("yes", "no")) == 1
     }
     game <- if (continue) {
@@ -35,7 +35,7 @@ startGame <- function(...){
     } else {
       message("あなたはアール城に住むアール婦人から、お茶会への招待を受け取った。")
       message("貴方のR言語に対する習熟度は?")
-      playerLevel <- menu(c("ﾁｮｯﾄﾜｶﾙ(上級者用)",
+      playerLevel <- menu(c("ﾁｮｯﾄﾃﾞｷﾙ(上級者用)",
                             "かなり使いこなせます",
                             "ちょっと慣れてきた",
                             "Rって何ですか"))
