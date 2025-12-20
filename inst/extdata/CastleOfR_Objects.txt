@@ -1,5 +1,5 @@
 name	room	objName	location	type	points	question	solution	val	hint	tip	floorMapsIdx	prepare	cleanup
-o_intro_1	intro	ペン	床の上	power	3	hint() 関数の頭に?をつけてヘルプを表示しましょう	`?`(hint)	NA	"?""?"""	NA	0	NA	NA
+o_intro_1	intro	ペン	床の上	power	3	hint() 関数の頭に'?'をつけてヘルプを表示しましょう	`?`(hint)	NA	"?""?"""	NA	0	NA	NA
 o_intro_2	intro	ハコ	椅子の上	pwd	0	"ベクトル [1, 2, 3]を作成するには？"	"c(1, 2, 3)"	"c(1, 2, 3)"	c	NA	0	NA	NA
 o_simple_3	simple	ボトル	ベッドの上	tip	0	変数名xに数値7を格納してください	x <- 7	NA	ヤジルシ	アール婦人に追いつかれるまでの時間が知りたいなら、?timeLeftを試してみてください	0	NA	"tryCatch(rm(x, envir = globalenv()), warning = function(w) {invisible()})"
 o_simple_4	simple	本	スタンドの上	power	3	ベクトルが格納された変数xが作成されました。Xの各要素の平方根を求めてください。	sqrt(x)	NA	答えは7文字。	NA	0	"x <<- c(4, 9, 16)"	"tryCatch(rm(x, envir = globalenv()), warning = function(w) {invisible()})"
