@@ -1,5 +1,5 @@
-Package: CastleOfR
-Title: Castle of R
+Package: CastleOfR-JP
+Title: Castle of R JP
 Version: 0.0.0.9000
 Authors@R: person("Giora", "Simchoni", email = "gsimchoni@gmail.com", role = c("aut", "cre"))
 Description: Rの城はcanonical 'An Introduction to R' by Venables, Smith and the R Core Teamという本に基づく、ゲームです。 このゲームの目的はRの基礎能力を試すことです。
