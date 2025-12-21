@@ -17,8 +17,8 @@ initializeGame <- function(playerLevel) {
   bridge <- Bridge$new("bridge", "運命の橋", "4", NA)
   
   # rooms
-  rooms_file <- system.file("extdata", "CastleOfR-JP_Rooms.txt",
-                            package = "CastleOfR-JP")
+  rooms_file <- system.file("extdata", "CastleOfR_Rooms.txt",
+                            package = "CastleOfR")
   rooms_df <- read.table(rooms_file, stringsAsFactors = FALSE, header = TRUE,
                          sep = "\t", comment.char = "|")
   rooms_list <- apply(rooms_df, 1, function(room) Room$new(room[["name"]],
@@ -29,8 +29,8 @@ initializeGame <- function(playerLevel) {
   list2env(rooms_list, envir = environment())
   
   # time rooms
-  timeRooms_file <- system.file("extdata", "CastleOfR-JP_TimeRooms.txt",
-                                package = "CastleOfR-JP")
+  timeRooms_file <- system.file("extdata", "CastleOfR_TimeRooms.txt",
+                                package = "CastleOfR")
   timeRooms_df <- read.table(timeRooms_file, stringsAsFactors = FALSE,
                              header = TRUE, sep = "\t", comment.char = "|")
   timeRooms_list <- apply(timeRooms_df, 1,
@@ -42,8 +42,8 @@ initializeGame <- function(playerLevel) {
   list2env(timeRooms_list, envir = environment())
   
   # dark rooms
-  darkRooms_file <- system.file("extdata", "CastleOfR-JP_DarkRooms.txt",
-                                package = "CastleOfR-JP")
+  darkRooms_file <- system.file("extdata", "CastleOfR_DarkRooms.txt",
+                                package = "CastleOfR")
   darkRooms_df <- read.table(darkRooms_file, stringsAsFactors = FALSE,
                              header = TRUE, sep = "\t", comment.char = "|")
   darkRooms_list <- apply(darkRooms_df, 1, function(room) 
@@ -52,8 +52,8 @@ initializeGame <- function(playerLevel) {
   list2env(darkRooms_list, envir = environment())
   
   # doors
-  doors_file <- system.file("extdata", "CastleOfR-JP_Doors.txt",
-                            package = "CastleOfR-JP")
+  doors_file <- system.file("extdata", "CastleOfR_Doors.txt",
+                            package = "CastleOfR")
   doors_df <- read.table(doors_file, stringsAsFactors = FALSE, header = TRUE,
                          sep = "\t", comment.char = "|")
   
@@ -74,8 +74,8 @@ initializeGame <- function(playerLevel) {
   list2env(doors_list, envir = environment())
   
   # objects
-  objects_file <- system.file("extdata", "CastleOfR-JP_Objects.txt",
-                              package = "CastleOfR-JP")
+  objects_file <- system.file("extdata", "CastleOfR_Objects.txt",
+                              package = "CastleOfR")
   objects_df <- read.table(objects_file, stringsAsFactors = FALSE,
                            header = TRUE, sep = "\t", comment.char = "|")
   
@@ -91,8 +91,8 @@ initializeGame <- function(playerLevel) {
   list2env(objects_list, envir = environment())
   
   # time rooms riddles
-  trRiddles_file <- system.file("extdata", "CastleOfR-JP_TimeRoomsRiddles.txt",
-                                package = "CastleOfR-JP")
+  trRiddles_file <- system.file("extdata", "CastleOfR_TimeRoomsRiddles.txt",
+                                package = "CastleOfR")
   trRiddles_df <- read.table(trRiddles_file, stringsAsFactors = FALSE,
                              header = TRUE, sep = "\t", comment.char = "|")
   trRiddles_list <- apply(trRiddles_df, 1, function(trRiddle)
@@ -104,8 +104,8 @@ initializeGame <- function(playerLevel) {
   list2env(trRiddles_list, envir = environment())
   
   # maps
-  mapsNames <- c("CastleOfR-JP_floor1.png", "CastleOfR-JP_floor2.png", "CastleOfR-JP_floor3.png", "CastleOfR-JP_Towers.png")
-  mapsNames <- sapply(mapsNames, function(mapName) system.file("extdata", mapName, package = "CastleOfR-JP"))
+  mapsNames <- c("CastleOfR_floor1.png", "CastleOfR_floor2.png", "CastleOfR_floor3.png", "CastleOfR_Towers.png")
+  mapsNames <- sapply(mapsNames, function(mapName) system.file("extdata", mapName, package = "CastleOfR"))
   floorMapsAvailable <- lapply(mapsNames, png::readPNG)
   names(floorMapsAvailable) <- 1:4
   
@@ -207,7 +207,7 @@ initializeGame <- function(playerLevel) {
         message("セーブして、中断したところから再開できるようにする?")
         saveAns <- menu(c("yes", "no")) == 1
         if (saveAns) {
-          saveRDS(game, file.path(find.package("CastleOfR-JP"), "CastleOfR-JP_game.RData"))
+          saveRDS(game, file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))
         }
       }
       message("終了前にワークスペースとプロットを削除する?")
@@ -218,7 +218,7 @@ initializeGame <- function(playerLevel) {
                  warning = function(w) {invisible()})
       }
       rm(.gameOn, envir = globalenv())
-      removeTaskCallback("CastleOfR-JP")
+      removeTaskCallback("CastleOfR")
       return(TRUE)
     }
   }
