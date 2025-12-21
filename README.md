@@ -15,7 +15,7 @@ devtools::install_github("gsimchoni/CastleOfR")
 Load:
 
 ``` r
-library(CastleOfR)
+library(JCastleOfR)
 ```
 
 Start game:

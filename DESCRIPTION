@@ -1,4 +1,4 @@
-Package: CastleOfR
+Package: JCastleOfR
 Title: Castle of R
 Version: 0.0.0.9000
 Authors@R: person("Giora", "Simchoni", email = "gsimchoni@gmail.com", role = c("aut", "cre"))
