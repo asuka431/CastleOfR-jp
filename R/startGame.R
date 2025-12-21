@@ -15,7 +15,7 @@ startGame <- function(...){
     message("ゲームはすでに起動しています。endGame() と入力してあとから再開できます。")
     invisible()
   } else {
-    removeTaskCallback("CastleOfR")
+    removeTaskCallback("CastleOfR-JP")
     message("始める前に変数とプロットをクリーンアップしますか?")
     cleanAns <- menu(c("yes", "no")) == 1
     if (cleanAns) {
@@ -26,12 +26,12 @@ startGame <- function(...){
     .gameOn <<- TRUE
     continue <- FALSE
     playerLevel <- NULL
-    if (file.exists(file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))) {
+    if (file.exists(file.path(find.package("CastleOfR-JP"), "CastleOfR-JP_game.RData"))) {
       message("前に来た時のデータがあります。前の続きから始めますか?")
       continue <- menu(c("yes", "no")) == 1
     }
     game <- if (continue) {
-      readRDS(file.path(find.package("CastleOfR"), "CastleOfR_game.RData"))
+      readRDS(file.path(find.package("CastleOfR-JP"), "CastleOfR-JP_game.RData"))
     } else {
       message("あなたはアール城に住むアール婦人から、お茶会への招待を受け取った。")
       message("貴方のR言語に対する習熟度は?")
@@ -54,7 +54,7 @@ startGame <- function(...){
       game$currentRoom$startScenario()
     }
     game$roomStartTime <- Sys.time()
-    addTaskCallback(cb, name = "CastleOfR")
+    addTaskCallback(cb, name = "CastleOfR-JP")
     invisible()
   }
 }
